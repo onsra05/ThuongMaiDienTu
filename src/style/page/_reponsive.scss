@@ -24,6 +24,7 @@ $SMALL_DEVICES  : "SMALL_DEVICES";
     }@else if $canvas == $SMALL_DEVICES {
         @media only screen and (max-width:575px) {
             @content
+            
         }
     }
     
