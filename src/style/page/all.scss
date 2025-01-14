@@ -1,0 +1,49 @@
+@use "sass:map";
+@use './theme' as *;
+@use './reponsive' as *;
+
+
+html, body {
+    margin: 0
+}
+
+* {
+    font-family:'Roboto';
+    padding: 0;
+    margin: 0;
+}
+
+.container{
+    max-width: 1170px;
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+    // background: map.get($theme-colors, "main" );
+    margin: auto;
+}
+
+.row{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-6{
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+.col-lg-3{
+    flex: 0 0 25%;
+    max-width: 25%;
+}
+
+.col-lg-6{
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+@include Responsive($MEDIUM) {
+    .col-lg-3 {
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+}
