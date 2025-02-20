@@ -1,0 +1,185 @@
+/* admin.scss */
+
+/* 🎨 Biến màu cho theme */
+:root {
+  --primary-color: #8e89e8;
+  --light-bg: #f9fafb;
+  --dark-bg: #1f2937;
+  --light-text: #1f2937;
+  --dark-text: #f3f4f6;
+  --sidebar-width: 240px;
+  --sidebar-collapsed-width: 70px;
+}
+
+/* 🌙 Theme tối */
+.dark {
+  --bg-color: var(--dark-bg);
+  --text-color: var(--dark-text);
+}
+
+/* ☀️ Theme sáng */
+.light {
+  --bg-color: var(--light-bg);
+  --text-color: var(--light-text);
+}
+
+.admin-container {
+  display: flex;
+  height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* 🗂️ Sidebar */
+.sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--primary-color);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+  transition: width 0.3s ease;
+
+  &.collapsed {
+    width: var(--sidebar-collapsed-width);
+  }
+
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background 0.2s;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .icon {
+      font-size: 1.2rem;
+      margin-right: 1rem;
+      width: 20px;
+      text-align: center;
+    }
+
+    .label {
+      white-space: nowrap;
+    }
+  }
+}
+
+/* 🏠 Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--primary-color);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  .toggle-btn {
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+    margin: 0;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+
+    .search-input {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      border: none;
+      margin-right: 1rem;
+    }
+
+    .theme-toggle,
+    .logout-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+      margin-left: 0.5rem;
+    }
+  }
+}
+
+/* 📄 Nội dung chính */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+
+  .page {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    h2 {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+  }
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    position: absolute;
+    z-index: 1000;
+    height: 100vh;
+    transform: translateX(-100%);
+    &.open {
+      transform: translateX(0);
+    }
+  }
+
+  .header .toggle-btn {
+    display: inline;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .header-actions {
+      width: 100%;
+      margin-top: 1rem;
+      justify-content: space-between;
+    }
+  }
+}

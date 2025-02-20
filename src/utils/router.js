@@ -1,5 +1,22 @@
-export const ROUTERS= {
+export const ROUTERS = {
     USER: {
-        HOME: ""
+        HOME: "/",
+        LOGIN: "/login",
+        REGISTER: "/register",
+        PROFILE: "/profile",
+        SETTINGS: "/settings",
+        DETAILS: "/details",
+        SHOPPINGCART: "/carts"
     },
+    ADMIN: {
+        DASHBOARD: "/admin/dashboard",
+        USERS: "/admin/users",
+        SETTINGS: "/admin/settings",
+        ADMINLAYOUT: "/admin/adminlayout",
+        CUSTOMERS: "/admin/customers",
+        ORDERS: "/admin/orders",
+        PRODUCTS: "/admin/products",
+        REPORTS: "/admin/reports",
+
+    }
 };

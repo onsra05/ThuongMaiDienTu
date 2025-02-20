@@ -1,0 +1,59 @@
+
+.customers-page {
+  padding: 2rem;
+
+  h2 {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .table-container {
+    overflow-x: auto;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .customer-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+      padding: 0.8rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    th {
+      background-color: #f3f4f6;
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background-color: #f9fafb;
+    }
+
+    td {
+      font-size: 0.95rem;
+    }
+  }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .customers-page {
+    padding: 1rem;
+
+    h2 {
+      font-size: 1.4rem;
+    }
+
+    .customer-table {
+      th, td {
+        padding: 0.6rem 0.5rem;
+        font-size: 0.85rem;
+      }
+    }
+  }
+}

@@ -3,9 +3,9 @@ import Header from "../header"
 import Footer from "../footer"
 const Master = ({ children, ...props }) => {
     return (<div {...props}>
-        <Header />
+        {/* <Header /> */}
         {children}
-        <Footer />
+        {/* <Footer /> */}
         </div>
 
     );

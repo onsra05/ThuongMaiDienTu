@@ -2,8 +2,10 @@ import { memo } from "react"
 import "./style.scss"
 
 import { AiFillFacebook, AiFillInstagram, AiFillTwitterCircle, AiFillWechat, AiOutlineUser } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { ROUTERS } from "../../../../utils/router";
 const Header = () => {
+    const navigate = useNavigate();
     return <div className="header__top">
         <div className="container">
             <div className="row">
@@ -14,7 +16,7 @@ const Header = () => {
                         <li><Link to={""}><AiFillInstagram /></Link></li>
                         <li><Link to={""}><AiFillTwitterCircle /></Link></li>
                         <li><Link to={""}><AiFillWechat /></Link></li>
-                        <li><Link to={""}><AiOutlineUser /></Link>
+                        <li onClick={()=> navigate(ROUTERS.USER.LOGIN)}><Link to={""}><AiOutlineUser /></Link>
                             <span>dang nhap</span>
                         </li>
                     </ul>
