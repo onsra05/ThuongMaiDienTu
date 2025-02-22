@@ -34,6 +34,7 @@ const Footer = () => {
                 <div className="col-lg-3">
                     <h3>Vị trí của chúng tôi</h3>
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.857631308865!2d106.68492447481876!3d10.822205289329377!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317528e5496d03cf%3A0xa5b8e7395ec636b9!2zMTIgTmd1eeG7hW4gVsSDbiBC4bqjbywgUGjGsOG7nW5nIDQsIEjhu5MgQ2jDrSBNaW5oLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1736844511982!5m2!1svi!2s"
+                        title="maps"
                         width="300"
                         height="300"
                         style={{ border: 0 }}

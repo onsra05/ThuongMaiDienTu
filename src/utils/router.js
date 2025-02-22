@@ -12,7 +12,7 @@ export const ROUTERS = {
         DASHBOARD: "/admin/dashboard",
         USERS: "/admin/users",
         SETTINGS: "/admin/settings",
-        ADMINLAYOUT: "/admin/adminlayout",
+        ADMINLAYOUT: "/admin",
         CUSTOMERS: "/admin/customers",
         ORDERS: "/admin/orders",
         PRODUCTS: "/admin/products",

@@ -3,7 +3,7 @@ import "./style.scss";
 
 import { useRef, useState, useEffect } from "react";
 
-const ProductList = ({ title, products }) => {
+const ProductList = ({ title, products  }) => {
   const listRef = useRef(null);
   const [showButtons, setShowButtons] = useState(false);
 

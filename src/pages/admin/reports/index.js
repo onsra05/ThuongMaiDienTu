@@ -11,7 +11,6 @@ const Reports = () => {
 
   return (
     <div className="customers-page">
-      <h2>Khách hàng</h2>
       <div className="table-container">
         <table className="customer-table">
           <thead>
