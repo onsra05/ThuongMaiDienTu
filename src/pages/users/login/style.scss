@@ -2,15 +2,18 @@
     width: 350px;
     margin: 50px auto;
     padding: 25px;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    background: #fff
+        /* linear-gradient(135deg, #dfd9d9, #f2dbd4) */
+    ;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     text-align: center;
-    color: #f5f5f5;
+    color: #eef2f7;
 
     h2 {
-        margin-bottom: 15px;
+        color: #222;
         font-size: 24px;
+        font-weight: bold;
     }
 
     .error {
@@ -31,16 +34,17 @@
     button {
         width: 100%;
         padding: 12px;
-        background: #ff6f61;
+        background: #28a745;
         color: white;
         border: none;
         border-radius: 8px;
         cursor: pointer;
         font-size: 16px;
         transition: background 0.3s;
+        margin: 0 10px;
 
         &:hover {
-            background: #ff3b2f;
+            background: #f5f3f3;
         }
     }
 }

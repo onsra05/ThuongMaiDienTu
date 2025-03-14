@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate  } from "react-router-dom";
 import "./style.scss";
 
 const menuItems = [
@@ -14,6 +14,12 @@ export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const location = useLocation();
+
+  const navigate = useNavigate();
+  const handerLogout = () =>{
+    //remove tokens
+    navigate("/");
+  }
 
   const getCurrentPageLabel = () => {
     const current = menuItems.find((item) => location.pathname.includes(item.path));
@@ -51,7 +57,7 @@ export default function AdminLayout() {
             <button className="theme-toggle" onClick={() => setDarkMode((prev) => !prev)}>
               {darkMode ? "🌙" : "☀️"}
             </button>
-            <button className="logout-btn">🚪 Đăng xuất</button>
+            <button className="logout-btn" onClick={handerLogout}>🚪 Đăng xuất</button>
           </div>
         </header>
 

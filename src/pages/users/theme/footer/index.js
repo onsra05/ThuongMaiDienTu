@@ -8,10 +8,10 @@ const Footer = () => {
 
                 <div className="col-lg-3">
                     <div className="footer__about">
-                        <h1 className="footer__about__logo"> ten shop</h1>
+                        <h1 className="footer__about__logo">Electric shop</h1>
                         <ul>
                             <li>dia chi: 12 nguyen van bao gv tphcm</li>
-                            <li>phone: 09999999</li>
+                            <li>phone: 099999999</li>
                             <li>email:iuh@edu.vn</li>
                         </ul>
                     </div>
