@@ -3,38 +3,56 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./style.scss";
 import { ROUTERS } from "../../../utils/router";
+import { registerUser } from "../../../services/regitster.service";
 
 const Register = () => {
-
     const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        password: "",
-        phone: "",
-        address: "",
-        gender: true,
-        status: true,
-        image: "https://i.pinimg.com/736x/b7/91/44/b79144e03dc4996ce319ff59118caf65.jpg",
-        registerDate: new Date().toISOString(),
-        role: ["user"]
+      name: "",
+      email: "",
+      password: "",
+      phone: "",
+      address: "",
+      gender: true,
+      status: true,
+      image: "https://i.pinimg.com/736x/b7/91/44/b79144e03dc4996ce319ff59118caf65.jpg",
+      registerDate: new Date().toISOString(),
+      role: ["user"],
     });
+  
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+  
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+      const { name, value } = e.target;
+      setFormData({ ...formData, [name]: value });
     };
+  
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await axios.post("http://localhost:8080/api/auth/signup", formData);
-            console.log("Đăng ký thành công", response.data);
-            navigate(ROUTERS.USER.LOGIN);
-        } catch (err) {
-            setError(err.response?.data?.message || "Đăng ký thất bại");
-        }
+      e.preventDefault();
+  
+
+      if (!formData.name || !formData.email || !formData.password || !formData.phone) {
+        alert("Vui lòng điền đầy đủ thông tin!");
+        setError("Vui lòng điền đầy đủ thông tin!");
+        return;
+      }
+  
+      setError(""); 
+      setLoading(true); 
+  
+      try {
+        const response = await registerUser(formData); 
+        alert("Đăng ký thành công!")
+        console.log("Đăng ký thành công", response); 
+        navigate(ROUTERS.USER.LOGIN);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
     };
 
     return (

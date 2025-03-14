@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { useState, useEffect, useRef } from "react";
 import "./style.scss";
+import { fetchFavoriteProducts, fetchFeaturedProducts } from "../../../services/home.service";
 
 const ProductList = ({ title, products }) => {
   const listRef = useRef(null);
@@ -55,33 +56,36 @@ const ProductList = ({ title, products }) => {
 const HomePage = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [favoriteProducts, setFavoriteProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  // sp ban chay
-  const fetchFeaturedProducts = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/api/products");
-      const data = await response.json();
-      setFeaturedProducts(data.content || []); // Lấy mảng từ `content`
-    } catch (error) {
-      console.error("Error fetching featured products:", error);
-    }
-  };
+    const loadProducts = async () => {
+      try {
+        const [featured, favorite] = await Promise.all([
+          fetchFeaturedProducts(),
+          fetchFavoriteProducts(),
+        ]);
+        setFeaturedProducts(featured);
+        setFavoriteProducts(favorite);
+      } catch (error) {
+        console.error("Error loading products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // sp yeu thich
-  const fetchFavoriteProducts = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/api/products/bestseller");
-      const data = await response.json();
-      setFavoriteProducts(data || []); // Lấy mảng từ `content`
-    } catch (error) {
-      console.error("Error fetching favorite products:", error);
-    }
-  };
+    loadProducts();
+  }, []);
 
-  fetchFeaturedProducts();
-  fetchFavoriteProducts();
-}, []);
+
+  // const renderProduct = (product) => (
+  //   <div key={product.productId} className="product-card">
+  //     <img src={product.image} alt={product.name} />
+  //     <h3>{product.name}</h3>
+  //     <p>{product.description}</p>
+  //     <p>Price: {product.price} VND</p>
+  //   </div>
+  // );
 
 
   return (

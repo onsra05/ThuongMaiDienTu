@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Outlet, useLocation, useNavigate  } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import "./style.scss";
 
 const menuItems = [
@@ -14,10 +14,12 @@ export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const location = useLocation();
+  const [user, setUser] = useState(null);
 
   const navigate = useNavigate();
-  const handerLogout = () =>{
-    //remove tokens
+  const handerLogout = () => {
+    localStorage.clear();
+    setUser(false);
     navigate("/");
   }
 

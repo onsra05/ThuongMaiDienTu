@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import "./style.scss";
+ import { fetchProducts, addProduct, updateProduct, deleteProduct } from "../../../services/product.service"; 
 
 const categoryList = [
   { categoryId: 1, categoryName: "Điện thoại" },
@@ -31,14 +31,15 @@ const Products = () => {
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
-    fetchProducts();
-  }, [page]); // Gọi API khi `page` thay đổi
+    loadProducts();
+  }, [page]);
 
-  const fetchProducts = async () => {
+  // Hàm lấy sản phẩm
+  const loadProducts = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/products?page=${page}&size=${size}`);
-      setProducts(response.data.content); // Dữ liệu sản phẩm từ API
-      setTotalPages(response.data.totalPages); // Cập nhật tổng số trang
+      const { products, totalPages } = await fetchProducts(page, size);
+      setProducts(products);
+      setTotalPages(totalPages);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -83,9 +84,9 @@ const Products = () => {
 
     try {
       if (form.productId) {
-        await axios.put(`http://localhost:8080/api/products/${form.productId}`, productData);
+        await updateProduct(form.productId, productData);
       } else {
-        await axios.post("http://localhost:8080/api/products", productData);
+        await addProduct(productData);
       }
       setShowPopup(false);
       setForm({
@@ -101,7 +102,7 @@ const Products = () => {
         sold: 0,
         category: { categoryId: "", categoryName: "" },
       });
-      fetchProducts();
+      loadProducts();
     } catch (error) {
       console.error("Lỗi khi gửi dữ liệu:", error);
     }
@@ -115,8 +116,8 @@ const Products = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) return;
     try {
-      await axios.delete(`http://localhost:8080/api/products/${id}`);
-      fetchProducts();
+      await deleteProduct(id);
+      loadProducts();
     } catch (error) {
       console.error("Lỗi khi xóa sản phẩm:", error);
     }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import "./style.scss";
+import { deleteCustomer, fetchCustomers } from "../../../services/customer.service";
 
 const Customers = () => {
   const [customers, setCustomers] = useState([]);
@@ -9,29 +9,27 @@ const Customers = () => {
   const pageSize = 5;
 
   useEffect(() => {
-    fetchCustomers();
+    // Gọi service để lấy danh sách khách hàng
+    const loadCustomers = async () => {
+      try {
+        const { customers, totalPages } = await fetchCustomers(page, pageSize);
+        setCustomers(customers);
+        setTotalPages(totalPages);
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách khách hàng:", error);
+      }
+    };
+    loadCustomers();
   }, [page]);
-
-  const fetchCustomers = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8080/api/auth?page=${page}&size=${pageSize}`);
-      const filteredCustomers = response.data.content.filter(customer => 
-        customer.roles.some(role => role.id === 1)
-      );
-      
-      setCustomers(filteredCustomers);
-      setTotalPages(response.data.totalPages);
-    } catch (error) {
-      console.error("Lỗi khi lấy danh sách khách hàng:", error);
-    }
-  };
-  
 
   const handleDelete = async (userId) => {
     if (!window.confirm("Bạn có chắc chắn muốn xóa người dùng này?")) return;
     try {
-      await axios.delete(`http://localhost:8080/api/auth/${userId}`);
-      fetchCustomers();
+      await deleteCustomer(userId); // Gọi service để xóa người dùng
+      // Sau khi xóa, reload danh sách khách hàng
+      const { customers, totalPages } = await fetchCustomers(page, pageSize);
+      setCustomers(customers);
+      setTotalPages(totalPages);
     } catch (error) {
       console.error("Lỗi khi xóa người dùng:", error);
     }

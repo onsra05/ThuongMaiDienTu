@@ -10,11 +10,13 @@ import Customers from "./pages/admin/customers";
 import Dashboard from "./pages/admin/dashboard";
 import Orders from "./pages/admin/orders";
 import Products from "./pages/admin/products";
-import AdminLayout from "./pages/admin/adminLayout";
 import Reports from "./pages/admin/reports";
 import Register from "./pages/users/register";
+import withAdminGuard from "./hoc/withAdminGuard";
+import AdminLayout from "./pages/admin/adminLayout";
 
 const renderUserRouter = () => {
+  const ProtectedAdminLayout = withAdminGuard(AdminLayout);
   const userRouter = [
     { path: ROUTERS.USER.HOME, component: <PageHome /> },
     { path: ROUTERS.USER.DETAILS, component: <DetailProduct /> },
@@ -29,7 +31,7 @@ const renderUserRouter = () => {
         {userRouter.map((item, key) => (
           <Route key={key} path={item.path} element={item.component} />
         ))}
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/admin" element={<ProtectedAdminLayout />} >
           <Route path="" element={<Navigate to={ROUTERS.ADMIN.DASHBOARD} replace />} />
           <Route path={ROUTERS.ADMIN.DASHBOARD} element={<Dashboard />} />
           <Route path={ROUTERS.ADMIN.PRODUCTS} element={<Products />} />
