@@ -24,16 +24,20 @@ const Login = () => {
         setLoading(true);
         try {
             const response = await loginService({ email, password });
+            console.log(response.data);
+            
             const { name, token, roles } = response.data;
     
             localStorage.setItem("name", name);
             localStorage.setItem("token", token);
             localStorage.setItem("roles", roles);
-    
+            localStorage.setItem("email", response.data.email);
+            
             // Kiểm tra vai trò và chuyển hướng
             if (roles.includes("ROLE_USER")) {
                 setTimeout(() => {
                     navigate(ROUTERS.USER.HOME);
+                    window.location.reload();
                 }, 3000);
                
             } else if (roles.includes("ROLE_ADMIN")) {
@@ -49,6 +53,17 @@ const Login = () => {
             setLoading(false);
         }
     };
+
+    const regexMail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    const validate = (value) => {
+        if (!regexMail.test(value)) {
+            setError("Email khong hop le")
+        } else{
+            setError("")
+        }
+        setEmail(value)
+    }
     
 
     return (
@@ -58,11 +73,11 @@ const Login = () => {
                     <h2>Đăng nhập</h2>
                     {error && <p className="error">{error}</p>}
                     <form onSubmit={handleSubmit}>
-                        <input
+                          <input
                             type="email"
                             placeholder="Email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) =>validate(e.target.value)}
                             required
                         />
                         <input

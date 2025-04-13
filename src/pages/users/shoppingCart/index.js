@@ -1,78 +1,118 @@
-import { memo, useState, useEffect } from "react";
+
+import React, { useState } from 'react';
+import { MdOutlineRemoveShoppingCart } from "react-icons/md";
 import "./style.scss";
 
-const ShoppingCart = ({ email }) => {
-  const [cart, setCart] = useState([]);
-  const [loading, setLoading] = useState(true);
+const EmptyCart = () => {
+  const [cartItems, setCartItems] = useState([]);
+  
 
-  useEffect(() => {
-    // Lấy dữ liệu giỏ hàng từ API
-    const fetchCart = async () => {
-      try {
-        const response = await fetch(`http://localhost:8080/api/cart/user/${email}`);
-        if (!response.ok) {
-          throw new Error("Lấy dữ liệu giỏ hàng không thành công");
-        }
-        const data = await response.json();
-        setCart(data);
-      } catch (error) {
-        console.error("Lỗi khi lấy dữ liệu giỏ hàng:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCart();
-  }, [email]);
-
-  const updateQuantity = (id, amount) => {
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.id === id ? { ...item, quantity: Math.max(1, item.quantity + amount) } : item
-      )
-    );
+  // Định dạng giá VND
+  const formatPrice = (price) => {
+    return price.toLocaleString('vi-VN');
   };
 
-  const removeItem = (id) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== id));
+  // Dữ liệu cứng
+  const dummyItems = [
+    {
+      id: 1,
+      name: "Sản phẩm A",
+      color: "Đỏ",
+      image: "https://via.placeholder.com/100",
+      price: 200000,
+      originalPrice: 250000,
+      discount: 50000,
+      quantity: 6,
+    },
+    {
+      id: 2,
+      name: "Sản phẩm B",
+      color: "Xanh",
+      image: "https://via.placeholder.com/100",
+      price: 300000,
+      originalPrice: 350000,
+      discount: 50000,
+      quantity: 2,
+    },
+  ];
+  const [items, setItems] = useState(dummyItems);
+
+  const onChangeQuantity = (id, newQuantity) => {
+    setItems(items.map(item => item.id === id ? { ...item, quantity: newQuantity } : item));
   };
 
-  const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-  if (loading) {
-    return <p>Đang tải...</p>;
-  }
+  const subtotal = dummyItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
     <div className="back">
-      <div className="container">
-        <h2>Giỏ hàng</h2>
-        {cart.length === 0 ? (
-          <p>Giỏ hàng trống.</p>
-        ) : (
-          <ul className="cart-list">
-            {cart.map((item) => (
-              <li key={item.id} className="cart-item">
-                <span>{item.name}</span>
-                <span>{item.price.toLocaleString()} VNĐ</span>
-                <div className="quantity-controls">
-                  <button onClick={() => updateQuantity(item.id, -1)}>-</button>
-                  <span>{item.quantity}</span>
-                  <button onClick={() => updateQuantity(item.id, 1)}>+</button>
+      {cartItems.length === 0 ? (
+        <div className="cart">
+          <div className="cart__container">
+            <div className="cart__header">
+              <h1 className="cart__title">Giỏ hàng của bạn ({dummyItems.length})</h1>
+              <button className="cart__clear-btn">Xóa tất cả</button>
+            </div>
+            <div className="cart__content">
+              <div className="cart__items">
+                {dummyItems.map(item => (
+                  <div key={item.id} className="cart__item">
+                    <div className="cart__item-image">
+                      <img src={item.image} alt={item.name} />
+                    </div>
+                    <div className="cart__item-info">
+                      <h3 className="cart__item-name">{item.name}</h3>
+                      <p className="cart__item-color">Màu: {item.color}</p>
+                      <div className="cart__item-quantity">
+                      <button
+                        className="cart__item-quantity-btn"
+                        onClick={() => onChangeQuantity(item.id, Math.max(1, item.quantity - 1))}
+                        disabled={item.quantity <= 1}
+                      >
+                        -
+                      </button>
+                      <span className="cart__item-quantity-value">{item.quantity}</span>
+                      <button
+                        className="cart__item-quantity-btn"
+                        onClick={() => onChangeQuantity(item.id, item.quantity + 1)}
+                      >
+                        +
+                      </button>
+                    </div>
+                    </div>
+                    <div className="cart__item-price">
+                      <p className="cart__item-current-price">{formatPrice(item.price)}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="cart__summary">
+                <div className="cart__summary-total">
+                  <span>Tổng tiền:</span>
+                  <span className="cart__summary-total-price">{formatPrice(subtotal)}</span>
                 </div>
-                <span>{(item.price * item.quantity).toLocaleString()} VNĐ</span>
-                <button className="remove-btn" onClick={() => removeItem(item.id)}>
-                  Xóa
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-        <h3>Tổng: {totalPrice.toLocaleString()} VNĐ</h3>
-        {cart.length > 0 && <button className="checkout-btn">Thanh toán</button>}
-      </div>
+                <button className="cart__checkout-btn">Tiến hành đặt hàng</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="cart">
+          <div className="cart__container">
+            <div className="cart__empty">
+              <div className="cart__empty-image">
+                <MdOutlineRemoveShoppingCart />
+              </div>
+              <h2 className="cart__empty-title">Giỏ hàng trống</h2>
+              <p className="cart__empty-subtitle">Không có sản phẩm nào trong giỏ hàng</p>
+              <a href="/" className="cart__empty-button">Về trang chủ</a>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-export default memo(ShoppingCart);
+export default EmptyCart;
+
+

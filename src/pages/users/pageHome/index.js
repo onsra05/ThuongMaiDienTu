@@ -2,6 +2,7 @@ import { memo } from "react";
 import { useState, useEffect, useRef } from "react";
 import "./style.scss";
 import { fetchFavoriteProducts, fetchFeaturedProducts } from "../../../services/home.service";
+import { Link } from "react-router-dom";
 
 const ProductList = ({ title, products }) => {
   const listRef = useRef(null);
@@ -38,12 +39,12 @@ const ProductList = ({ title, products }) => {
       <div className="product-section__wrapper">
         {showButtons && <button className="scroll-button left" onClick={scrollLeft}>❮</button>}
         <div className="product-section__list" ref={listRef}>
-          {products?.map((product, index) => (
-            <div className="product" key={index}>
+          {products?.map((product ) => (
+            <Link to={`/details/${product.productId}`} key={product.id} className="product">
               <img src={product?.image} alt={product?.name} className="product__image" />
               <h3 className="product__name">{product?.name}</h3>
               <p className="product__price">{formatPrice(product?.price) } đ</p>
-            </div>
+            </Link>
           ))}
         </div>
         {showButtons && <button className="scroll-button right" onClick={scrollRight}>❯</button>}

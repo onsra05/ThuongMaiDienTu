@@ -5,7 +5,7 @@ export const ROUTERS = {
         REGISTER: "/register",
         PROFILE: "/profile",
         SETTINGS: "/settings",
-        DETAILS: "/details",
+        DETAILS: "/details/:id",
         SHOPPINGCART: "/carts"
     },
     ADMIN: {
