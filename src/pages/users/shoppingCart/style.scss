@@ -91,6 +91,7 @@
   font-size: 16px;
   cursor: pointer;
   transition: background 0.3s;
+  margin-bottom: 10px;
   
   &:hover {
     background: #218838;
@@ -174,6 +175,32 @@
     background: #0056b3;
   }
 }
+
+.cart__item-remove {
+  display: flex;
+  justify-content: flex-end;
+
+  .cart__item-remove-btn {
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+
+    &:hover {
+      background-color: #d9363e;
+      transform: scale(1.05);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}
+
 
 @media (max-width: 768px) {
   

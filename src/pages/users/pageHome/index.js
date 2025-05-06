@@ -1,7 +1,9 @@
+
+
 import { memo } from "react";
 import { useState, useEffect, useRef } from "react";
 import "./style.scss";
-import { fetchFavoriteProducts, fetchFeaturedProducts } from "../../../services/home.service";
+import { fetchFavoriteProducts, fetchFeaturedProducts, fetchRecommendationProducts } from "../../../services/home.service";
 import { Link } from "react-router-dom";
 
 const ProductList = ({ title, products }) => {
@@ -57,36 +59,48 @@ const ProductList = ({ title, products }) => {
 const HomePage = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [favoriteProducts, setFavoriteProducts] = useState([]);
+  const [recommendationProducts, setRecommendationProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const userId = localStorage.getItem('id');
+
+
+  const random = (array) => {
+    let shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+    }
+    return shuffledArray;
+  };
 
   useEffect(() => {
     const loadProducts = async () => {
+      setLoading(true);
       try {
         const [featured, favorite] = await Promise.all([
           fetchFeaturedProducts(),
           fetchFavoriteProducts(),
         ]);
-        setFeaturedProducts(featured);
-        setFavoriteProducts(favorite);
+        setFeaturedProducts(random(featured));
+        setFavoriteProducts(random(favorite));
+  
+        if (userId) {
+          const recommendation = await fetchRecommendationProducts(userId);
+          console.log("Recommendation products:", recommendation);
+          setRecommendationProducts(recommendation);
+        }
       } catch (error) {
         console.error("Error loading products:", error);
       } finally {
         setLoading(false);
       }
     };
-
+  
     loadProducts();
-  }, []);
+  }, [userId]);
+  
 
-
-  // const renderProduct = (product) => (
-  //   <div key={product.productId} className="product-card">
-  //     <img src={product.image} alt={product.name} />
-  //     <h3>{product.name}</h3>
-  //     <p>{product.description}</p>
-  //     <p>Price: {product.price} VND</p>
-  //   </div>
-  // );
 
 
   return (
@@ -94,20 +108,18 @@ const HomePage = () => {
       <div className="container">
         <div className="banner">
           <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRXI0gh51DSoPcJwx2EM8HSsdQM_gZ3AXGFw&s"
+            src="https://cdnv2.tgdd.vn/mwg-static/tgdd/Banner/c6/b8/c6b898e13ba7a82f25f730cb9418d9ab.png"
             alt="Banner"
             className="banner__image"
           />
-          <div className="banner__overlay">
-            <h1 className="banner__title">Chào mừng đến với Shop của chúng tôi!</h1>
-            <p className="banner__text">Ưu đãi đặc biệt cho khách hàng mới - Giảm giá 20% hôm nay!</p>
-            <button className="banner__button">Mua Ngay</button>
-          </div>
         </div>
 
         {/* // render */}
+        {recommendationProducts.length > 0 && (
+          <ProductList title="Sản phẩm đề xuất cho bạn" products={recommendationProducts} />
+        )}
         <ProductList title="Sản phẩm nổi bật" products={featuredProducts} />
-        <ProductList title="Sản phẩm ban chay nhất" products={favoriteProducts} />
+        <ProductList title="Sản phẩm bán chạy nhất" products={favoriteProducts} />
       </div>
     </div>
   );

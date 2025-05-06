@@ -64,7 +64,7 @@ const Register = () => {
                         <input className="register-input" type="text" name="name" placeholder="Họ và tên" value={formData.name} onChange={handleChange} required />
                         <input className="register-input" type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
                         <input className="register-input" type="password" name="password" placeholder="Mật khẩu" value={formData.password} onChange={handleChange} required />
-                        <input className="register-input" type="text"  name="phone" placeholder="Số điện thoại" value={formData.phone}   onChange={handleChange}  required />
+                        <input className="register-input" type="tel"  name="phone" placeholder="Số điện thoại" value={formData.phone}   onChange={handleChange}  required />
                         <input className="register-input" type="text" name="address" placeholder="Địa chỉ" value={formData.address} onChange={handleChange} required />
                         {/* <input className="register-input" type="text" name="image" placeholder="Ảnh đại diện (URL)" value={formData.image} onChange={handleChange} /> */}
                         <button className="register-button" type="submit">Đăng ký</button>

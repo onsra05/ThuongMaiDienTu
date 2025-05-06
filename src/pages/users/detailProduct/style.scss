@@ -73,6 +73,7 @@ $white: #ffffff;
   .product-price {
     display: flex;
     align-items: baseline;
+    color: #f39c12;
 
     .current-price {
       font-size: 24px;
@@ -177,6 +178,10 @@ $white: #ffffff;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 20px;
+    }
+
+    .related-price{
+      color: #f39c12;
     }
 
     .related-item {

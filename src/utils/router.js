@@ -6,7 +6,10 @@ export const ROUTERS = {
         PROFILE: "/profile",
         SETTINGS: "/settings",
         DETAILS: "/details/:id",
-        SHOPPINGCART: "/carts"
+        SHOPPINGCART: "/carts",
+        ORDERHISTORY: "/order-history",
+        SEARCHRESULT: "/search-results",
+        
     },
     ADMIN: {
         DASHBOARD: "/admin/dashboard",

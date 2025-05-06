@@ -10,24 +10,23 @@ const Footer = () => {
                     <div className="footer__about">
                         <h1 className="footer__about__logo">Electric shop</h1>
                         <ul>
-                            <li>dia chi: 12 nguyen van bao gv tphcm</li>
-                            <li>phone: 099999999</li>
-                            <li>email:iuh@edu.vn</li>
+                            <li>Địa chỉ: 12 Nguyễn Văn Bảo GV TPHCM</li>
+                            <li>Phone: 099999999</li>
+                            <li>Email: iuh@edu.vn</li>
                         </ul>
                     </div>
                 </div>
                 <div className="col-lg-6">
                     <div className="footer__widget">
-                        <h3>Thong Tin</h3>
+                        <h3>Thông Tin</h3>
                         <ul>
-                            <li><Link>Lien he</Link></li>
-                            <li><Link>Thong tin ve chung toi</Link></li>
-                            <li><Link>San pham kinh doanh</Link></li>
+                            <li><Link>Liên hệ</Link></li>
+                            <li><Link>Thông tin về chúng tôi</Link></li>
+                            <li><Link>Sản phẩm kinh doanh</Link></li>
                         </ul>
                         <ul>
-                            <li><Link>Tuyen dung</Link></li>
-                            <li><Link>gui gop y, khieu nai</Link></li>
-                            {/* <li><Link>San pham kinh doanh</Link></li> */}
+                            <li><Link>Tuyển dụng</Link></li>
+                            <li><Link>Gửi góp ý, khiếu nại</Link></li>
                         </ul>
                     </div>
                 </div>

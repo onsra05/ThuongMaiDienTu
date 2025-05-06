@@ -14,6 +14,8 @@ import Reports from "./pages/admin/reports";
 import Register from "./pages/users/register";
 import withAdminGuard from "./hoc/withAdminGuard";
 import AdminLayout from "./pages/admin/adminLayout";
+import OrderHistory from "./pages/users/orderHistory";
+import SearchResult from "./pages/users/searchResult";
 
 const renderUserRouter = () => {
   const ProtectedAdminLayout = withAdminGuard(AdminLayout);
@@ -23,6 +25,8 @@ const renderUserRouter = () => {
     { path: ROUTERS.USER.LOGIN, component: <Login /> },
     { path: ROUTERS.USER.SHOPPINGCART, component: <ShoppingCart /> },
     { path: ROUTERS.USER.REGISTER, component: <Register /> },
+    { path: ROUTERS.USER.ORDERHISTORY, component: <OrderHistory /> },
+    { path: ROUTERS.USER.SEARCHRESULT, component: <SearchResult /> },
   ];
 
   return (

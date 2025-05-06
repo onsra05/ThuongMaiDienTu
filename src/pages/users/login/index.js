@@ -11,8 +11,6 @@ const Login = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
     
@@ -20,18 +18,16 @@ const Login = () => {
             setError("Email và mật khẩu là bắt buộc.");
             return;
         }
-    
         setLoading(true);
         try {
             const response = await loginService({ email, password });
-            console.log(response.data);
-            
-            const { name, token, roles } = response.data;
+            const { name, token, roles, id } = response.data;
     
             localStorage.setItem("name", name);
             localStorage.setItem("token", token);
             localStorage.setItem("roles", roles);
             localStorage.setItem("email", response.data.email);
+            localStorage.setItem("id", id);
             
             // Kiểm tra vai trò và chuyển hướng
             if (roles.includes("ROLE_USER")) {
@@ -64,6 +60,14 @@ const Login = () => {
         }
         setEmail(value)
     }
+    const validatePassword = (value) => {
+        if (value.length < 2) {
+            setError("Password khong hop le")
+        } else{
+            setError("")
+        }
+        setPassword(value)
+    }
     
 
     return (
@@ -84,7 +88,7 @@ const Login = () => {
                             type="password"
                             placeholder="Mật khẩu"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e) => validatePassword(e.target.value)}
                             required
                         />
                         <button className="login-link" onClick={() => {

@@ -38,7 +38,7 @@ export const updateProduct = async (productId, productData) => {
 // xoa spam
 export const deleteProduct = async (productId) => {
   try {
-    const response = await axios.delete(`$process.env.REACT_APP_BASE_URL}/products/${productId}`);
+    const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/products/${productId}`);
     return response.data;
   } catch (error) {
     console.error("Error deleting product:", error);
@@ -67,3 +67,15 @@ export const fetchProductByCategory = async (categoryId) => {
     return [];
   }
 };
+
+
+// search
+export const searchProduct = (userId, keyword) => {
+  return axios.post(`${process.env.REACT_APP_BASE_URL}/products/search/${userId}`, keyword, {
+    headers: {
+      'Content-Type': 'text/plain'
+    }
+  });
+  
+};
+

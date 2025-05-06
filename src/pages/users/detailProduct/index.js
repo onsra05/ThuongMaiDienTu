@@ -3,7 +3,7 @@ import './style.scss';
 import { FiHeart } from 'react-icons/fi';
 import { useParams } from "react-router-dom";
 import { fetchProductByCategory, fetchProductById } from '../../../services/product.service';
-import { addToOrder, fetchCartIdByEmail } from '../../../services/cart.service';
+import { addCartDetail, fetchCartIdByEmail } from '../../../services/cart.service';
 import { jwtDecode } from "jwt-decode";
 
 const DetailProduct = () => {
@@ -51,76 +51,84 @@ const DetailProduct = () => {
     return new Intl.NumberFormat('vi-VN').format(price) + ' ₫';
   };
 
-
   const addToCart = async (product) => {
-    console.log("Sản phẩm thêm vào giỏ hàng:", product); // Kiểm tra log
-
-    const token = localStorage.getItem("token"); // Giả sử token lưu trong localStorage với key "token"
+    const token = localStorage.getItem("token");
     const cartKey = "guest_cart";
-
+    const productWithQuantity = { ...product, quantity };
+  
     if (token) {
       const decoded = jwtDecode(token);
       const email = decoded.sub;
-      console.log(email);
-      
-      
+  
       try {
-        // Lấy giỏ hàng hiện tại trong localStorage
-        let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
-        console.log(cart);
-
-        // Kiểm tra sản phẩm đã tồn tại chưa
-        const existingProductIndex = cart.findIndex((item) => item.productId === product.productId);
-
-        if (existingProductIndex !== -1) {
-          // Nếu sản phẩm đã tồn tại, tăng số lượng
-          cart[existingProductIndex].quantity += product.quantity;
-        } else {
-          // Nếu chưa tồn tại, thêm sản phẩm mới
-          cart.push({ ...product });
+        const cartIdResponse = await fetchCartIdByEmail(email);
+        if (!cartIdResponse || !cartIdResponse.cartId) {
+          console.error("Không tìm thấy cartId!");
+          alert("Không tìm thấy giỏ hàng của bạn.");
+          return;
         }
-
-        // Lưu lại vào localStorage trước khi đồng bộ
-        localStorage.setItem(cartKey, JSON.stringify(cart));
-
-        // Đồng bộ giỏ hàng lên server với token
-        await addToOrder(email, cart); // Giả sử addToOrder yêu cầu token để đồng bộ
-
-        // Xóa giỏ hàng sau khi đồng bộ thành công
-        localStorage.removeItem(cartKey);
-
-        console.log("Giỏ hàng sau khi thêm:", cart);
-        alert("Sản phẩm đã được thêm vào giỏ hàng của bạn!");
+  
+        // Gửi dữ liệu vào cartDetail
+        const payload = {
+          quantity: productWithQuantity.quantity,
+          price: productWithQuantity.price - productWithQuantity.discount,
+          product: {
+            productId: productWithQuantity.productId,
+            category: {
+              categoryId: productWithQuantity.category.categoryId,
+            },
+          },
+          cart: {
+            cartId: cartIdResponse.cartId,
+            // user: {
+            //   email: email,
+            // },
+            amount: productWithQuantity.price * productWithQuantity.quantity,
+          },
+        };
+  
+        await addCartDetail(cartIdResponse.cartId, payload);
+  
+        alert("Đã thêm sản phẩm vào giỏ hàng!");
       } catch (error) {
         console.error("Lỗi khi thêm vào giỏ hàng:", error);
-        alert("Đã xảy ra lỗi khi đồng bộ giỏ hàng.");
+        alert("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.");
       }
     } else {
-      // Nếu chưa đăng nhập, lưu vào localStorage
       let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
-      const existingProductIndex = cart.findIndex((item) => item.productId === product.productId);
-
-      if (existingProductIndex !== -1) {
-        cart[existingProductIndex].quantity += product.quantity;
+      const existingIndex = cart.findIndex((item) => item.productId === product.productId);
+  
+      if (existingIndex !== -1) {
+        cart[existingIndex].quantity += productWithQuantity.quantity;  // Cập nhật quantity
       } else {
-        cart.push({ ...product });
+        cart.push(productWithQuantity);
       }
-
+  
       localStorage.setItem(cartKey, JSON.stringify(cart));
-
-      console.log("Giỏ hàng sau khi thêm (chưa đăng nhập):", cart);
       alert("Sản phẩm đã được thêm vào giỏ hàng tạm thời.");
     }
   };
+  
+  
 
-  const getCartID = async () => {
-    const email = localStorage.getItem("email");
-    const cart = await fetchCartIdByEmail(email);
-    console.log(cart.cartId);
-    localStorage.setItem("cartId", cart.cartId);
-  };
-  getCartID();
 
+  useEffect(() => {
+    const getCartID = async () => {
+      const email = localStorage.getItem("email");
+      if (!email) return;
+  
+      try {
+        const cart = await fetchCartIdByEmail(email);
+        localStorage.setItem("cartId", cart.cartId);
+      } catch (error) {
+        console.error("Lỗi khi lấy cart ID:", error);
+      }
+    };
+  
+    getCartID();
+  }, []);
+  
+  
   return (
 
     <div className="back">

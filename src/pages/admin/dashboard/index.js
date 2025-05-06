@@ -1,4 +1,3 @@
-// Dashboard.jsx (Giao diện Dashboard cho trang quản lý website thương mại điện tử)
 import React, { useState, useEffect } from "react";
 import {
   AiOutlineShoppingCart,
@@ -6,8 +5,8 @@ import {
   AiOutlineAppstore,
   AiOutlineDollarCircle,
 } from "react-icons/ai";
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import "./style.scss"; // Đảm bảo đúng tên file SCSS
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import "./style.scss";
 
 const Dashboard = () => {
   const stats = [
@@ -18,8 +17,22 @@ const Dashboard = () => {
   ];
 
   const [revenueData, setRevenueData] = useState([]);
+  const [statsData, setStatsData] = useState({ orders: 0, customers: 0, products: 0, revenue: 0 });
 
   useEffect(() => {
+    // Giả lập gọi API để lấy dữ liệu thống kê
+    const fetchStatsData = async () => {
+      // Giả lập gọi API cho các thông tin thống kê
+      setStatsData({
+        orders: 1500,
+        customers: 600,
+        products: 350,
+        revenue: 500000000, // Doanh thu
+      });
+    };
+
+    fetchStatsData();
+
     // Giả lập gọi API để lấy dữ liệu doanh thu 6 tháng gần nhất
     const data = [
       { name: "Th9", value: 25000000 },
@@ -32,8 +45,6 @@ const Dashboard = () => {
     setRevenueData(data);
   }, []);
 
-  const COLORS = ["#4CAF50", "#2196F3", "#FFC107", "#FF5722", "#9C27B0", "#00BCD4"];
-
   return (
     <div className="dashboard-container">
       <h2 className="dashboard-title">Bảng điều khiển</h2>
@@ -44,35 +55,26 @@ const Dashboard = () => {
           <div key={index} className="stat-card">
             <div>
               <h3 className="stat-title">{item.title}</h3>
-              <p className="stat-value">{item.value}</p>
+              <p className="stat-value">{item.title === "Doanh thu" ? `₫${statsData.revenue.toLocaleString()}` : item.value}</p>
             </div>
             {item.icon}
           </div>
         ))}
       </div>
 
-      {/* Biểu đồ tròn doanh thu */}
+      {/* Biểu đồ cột doanh thu */}
       <div className="revenue-chart">
         <h3 className="chart-title">Tỷ lệ doanh thu 6 tháng gần nhất</h3>
-        <div className="pie-chart-container">
+        <div className="bar-chart-container">
           <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={revenueData}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                outerRadius={100}
-                // label  // hien doanh thu theo thang
-              >
-                {revenueData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
+            <BarChart data={revenueData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
               <Tooltip formatter={(value) => `₫${value.toLocaleString()}`} />
               <Legend />
-            </PieChart>
+              <Bar dataKey="value" fill="#2196F3" />
+            </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
