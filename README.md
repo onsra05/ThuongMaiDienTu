@@ -1,1 +1,7 @@
-cap nhat lai readme sau
+git clone 
+
+
+npm i
+cd testap
+
+npm start

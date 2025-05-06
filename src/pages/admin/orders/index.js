@@ -74,7 +74,7 @@ const Orders = () => {
   const handleViewDetails = async (orderId) => {
     try {
       const res = await axios.get(`http://localhost:8080/api/orderDetail/order/${orderId}`);
-      setOrderDetails(res.data); // danh sách chi tiết sản phẩm
+      setOrderDetails(res.data);
       setSelectedOrder(orderId);
       setShowModal(true);
     } catch (error) {
@@ -102,11 +102,11 @@ const Orders = () => {
       if (newStatus === "1") url = `/api/orders/deliver/${orderId}`;
       else if (newStatus === "2") url = `/api/orders/success/${orderId}`;
       else if (newStatus === "-1") url = `/api/orders/cancel/${orderId}`;
-      else return; // giữ nguyên nếu chọn lại "Đang xử lý"
+      else return;
 
       await axios.get(`http://localhost:8080${url}`);
       alert("Cập nhật trạng thái thành công!");
-      fetchOrders(); // reload lại đơn hàng
+      fetchOrders();
     } catch (error) {
       console.error("Lỗi khi cập nhật trạng thái:", error);
       alert("Có lỗi xảy ra khi cập nhật trạng thái!");
